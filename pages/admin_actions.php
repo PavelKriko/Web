@@ -98,8 +98,7 @@ elseif ($_POST['action'] === 'edit_manufacturer') {
 }
 
 
-//car_cost=31000&car_aboutModel=Very%20cool%20car
-//ДОБАВЛЕНИЕ АВТОМОБИЛЯ
+//ДОБАВЛЕНИЕ АВТОМОБИЛЯ - DONE
 elseif($_POST['action'] === 'add_car'){
     $manufacturerID = $_POST['car_manufacturerID'];
     $car_name = $_POST['car_name'];
@@ -110,13 +109,6 @@ elseif($_POST['action'] === 'add_car'){
     $car_speed = $_POST['car_speed'];
     $car_cost = $_POST['car_cost'];
     $car_aboutModel = $_POST['car_aboutModel'];
-
-    $stmt = $pdo->prepare("SELECT MAX(id) AS max_value FROM Car");
-    $stmt->execute();
-
-    $maxValue = $stmt->fetchColumn();
-
-    $maxValue++;
 
     $stmt = $pdo->prepare("INSERT INTO Car (ManufacturerID, Name, Photo, BodyType, Transmision, Engine, Speed, Cost, AboutModel)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -130,8 +122,26 @@ elseif($_POST['action'] === 'add_car'){
     else{
         echo json_encode(['status' => 'false', 'message' => 'Car add false.']);
     }
+}
 
+elseif($_POST['action'] === 'add_manufacturer'){
+    $manufacturer_name = $_POST['manufacturer_name'];
+    $manufacturer_logo = $_POST['manufacturer_logo'];
+    $manufacturer_description = $_POST['manufacturer_description'];
 
+    $stmt = $pdo->prepare("INSERT INTO Manufacturer (ManufacturerName, Logo, Description)
+                        VALUES (?, ?, ?)");
+
+    
+
+    $stmt->execute([$manufacturer_name,$manufacturer_logo,$manufacturer_description]);
+    $rowCount = $stmt->rowCount();
+    if($rowCount>0){
+        echo json_encode(['status' => 'success', 'message' => 'Manufacturer add successfully.']);
+    }
+    else{
+        echo json_encode(['status' => 'false', 'message' => 'Manufacturer add false.']);
+    }
 }
 
 ?>

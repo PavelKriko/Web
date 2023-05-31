@@ -5,6 +5,7 @@
 }
 
 .header__body{
+    height: 100%;
     align-items: center;
     display: flex;
     justify-content: space-between;
@@ -12,7 +13,7 @@
 
 .main__button{
     font-weight: 900;
-    font-size: 64px;
+    font-size: 48px;
     color: #FFFFFF;
 }
 
@@ -23,6 +24,7 @@
 }
 
 header{
+    display: flex;
     top: 0;
     left: 0;
     right: 0;

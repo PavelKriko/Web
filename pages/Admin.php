@@ -17,6 +17,85 @@ $manufacturers = $manufacturerQuery->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+    .admin{
+        padding: 32px 128px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .admin__wrapper{
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        justify-content: flex-start;
+        padding: 24px;
+        background: #fafafa;
+        border-radius: 8px;
+        border: 1px solid #d7d7d7;
+        box-shadow: 0 0 32px #0002;
+        max-width: 100%;
+    }
+
+    #add-car-form, #edit-car-form, #edit-manufacturer-form, #add-manufacturer-form{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    #add-car-form input, #edit-car-form input, #edit-manufacturer-form input, #add-manufacturer-form input{
+        margin-top: -12px;
+    }
+
+    button{
+        width: 100%;
+        cursor: pointer;
+        margin-top: 4px;
+        border-radius: 8px;
+        border: none;
+        padding: 4px 8px;
+    }
+
+    input{
+        font-size: 16px;
+        font-weight: 500;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #d7d7d7;
+        outline: none;
+        color: #3d3d3d;
+    }
+    textarea{
+        font-size: 16px;
+        font-weight: 500;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid #d7d7d7;
+        min-width: 100%;
+        max-width: 100%;
+        color: #3d3d3d;
+        min-height: 200px;
+    }
+    .edit-car-button, .edit-manufacturer-button{
+        background: lime;
+    }
+    
+    .delete-car-button, .delete-manufacturer-button{
+        background: red;
+    }   
+    
+
+</style>
+
+<div class="admin">
+    <div class="admin__wrapper">
 <h2>Add New Car</h2>
 <form id="add-car-form" method="post">
     <input type="hidden" name="action" value="add_car">
@@ -168,6 +247,8 @@ $manufacturers = $manufacturerQuery->fetchAll(PDO::FETCH_ASSOC);
             <textarea name="manufacturer_description" id="edit-manufacturer-description" required></textarea>
             <input type="submit" value="Save">
         </form>
+    </div>
+</div>
     </div>
 </div>
 
@@ -365,5 +446,29 @@ $manufacturers = $manufacturerQuery->fetchAll(PDO::FETCH_ASSOC);
                 }
             });
         });
+
+        //Отправка формы добавление производителя
+        $('#add-manufacturer-form').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: 'admin/admin_actions.php',
+                type: 'post',
+                dataType: 'json',
+                data: $(this).serialize(),
+                success: function (response) {
+                    console.log(response);
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('Error occurred while updating car data.');
+                }
+            });
+        });
     });
 </script>
+
